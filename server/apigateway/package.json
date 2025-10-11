@@ -4,10 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "compile": "tsc",
-    "start": "pnpm run compile && node ./dist/index.js",
-    "dev": "ts-node src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",

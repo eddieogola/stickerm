@@ -6,7 +6,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { expressMiddleware } from "@as-integrations/express5";
 import gql from "graphql-tag";
 import { buildSubgraphSchema } from "@apollo/subgraph";
-import resolvers from "@/src/resolvers";
+import resolvers from "./resolvers";
 import { readFileSync } from "fs";
 
 const whitelist = process.env.WHITELIST?.split(",") || [];
