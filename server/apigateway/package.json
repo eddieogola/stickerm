@@ -2,9 +2,11 @@
   "name": "apigateway",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "scripts": {
-    "dev": "ts-node src/index.ts"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
+    "lint": "eslint 'src/**/*.ts'"
   },
   "keywords": [],
   "author": "",
@@ -14,17 +16,20 @@
     "@apollo/server": "^5.0.0",
     "@apollo/subgraph": "^2.11.3",
     "@as-integrations/express5": "^1.1.2",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
-    "graphql-tag": "^2.12.6",
-    "ts-node": "^10.9.2"
+    "graphql-tag": "^2.12.6"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
     "@types/node": "^24.7.2",
+    "eslint": "^9.37.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
 }

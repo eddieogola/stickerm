@@ -1,13 +1,14 @@
 import express from "express";
 import cors from "cors";
-import "dotenv/config";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { expressMiddleware } from "@as-integrations/express5";
 import gql from "graphql-tag";
 import { buildSubgraphSchema } from "@apollo/subgraph";
-import resolvers from "./resolvers";
 import { readFileSync } from "fs";
+
+import resolvers from "./resolvers";
+import productRoutes from "./routes/product";
 
 const whitelist = process.env.WHITELIST?.split(",") || [];
 const app = express();
@@ -58,3 +59,5 @@ const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
 });
 console.log(`🚀  Server ready at: ${url}`);
+
+export default app;
