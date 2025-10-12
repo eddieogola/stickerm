@@ -1,22 +1,19 @@
-import { Request, Response } from "express";
-import { getItems } from "../src/controllers/productController";
-import { items } from "../src/models/item";
+import request from "supertest";
+import app from "../../src/server";
 
-describe("Product Controller", () => {
-  it("should return an empty array when no products exist", () => {
-    // Create mock objects for Request, Response, and NextFunction
-    const req = {} as Request;
-    const res = {
-      json: jest.fn(),
-    } as unknown as Response;
+describe("GraphQL API", () => {
+  it("returns products", async () => {
+    const query = `query Product {
+products {
+  id
+}
 
-    // Ensure that our in-memory store is empty
-    items.length = 0;
-
-    // Execute our controller function
-    getItems(req, res, jest.fn());
-
-    // Expect that res.json was called with an empty array
-    expect(res.json).toHaveBeenCalledWith([]);
+}`; // GraphQL query example
+    const response = await request(app)
+      .post("/graphql")
+      .send({ query })
+      .expect(200);
+    expect(Array.isArray(response.body.data.products)).toBe(true);
+    expect(response.body.data.products).toBeInstanceOf(Array);
   });
 });

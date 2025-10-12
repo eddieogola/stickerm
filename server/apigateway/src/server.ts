@@ -14,7 +14,7 @@ import config from "./config";
 
 const app = express();
 
-async function startServer() {
+export async function startServer() {
   const typeDefs = gql(
     readFileSync(join(__dirname, "schema.graphql"), {
       encoding: "utf-8",
