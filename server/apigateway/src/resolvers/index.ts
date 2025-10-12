@@ -1,8 +1,8 @@
-import products from "./products";
+import { getProducts } from "../controllers/productController";
 
 const resolvers = {
   Query: {
-    products: () => products,
+    products: getProducts,
   },
 };
 

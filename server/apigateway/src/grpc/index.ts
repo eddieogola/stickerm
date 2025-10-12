@@ -1,7 +1,8 @@
 import { loadPackageDefinition } from "@grpc/grpc-js";
-import protoLoader from "@grpc/proto-loader";
+import * as protoLoader from "@grpc/proto-loader";
+import { join } from "path";
 
-const PROTO_PATH = __dirname + "/../../protos/stickerm.proto";
+const PROTO_PATH = join(__dirname, "../../../protos/stickerm.proto");
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,

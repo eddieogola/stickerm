@@ -28,7 +28,7 @@ interface ProductService extends Client {
   ): void;
 }
 
-const client: ProductService = new stickermProto.ProductService(
+const client: ProductService = new (stickermProto as any).ProductService(
   "localhost:50051",
   credentials.createInsecure(),
 );

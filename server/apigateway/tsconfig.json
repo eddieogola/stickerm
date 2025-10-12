@@ -3,7 +3,7 @@
     "outDir": "dist",
     "lib": ["es2023"],
     "target": "es2023",
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "types": ["node", "jest"],
