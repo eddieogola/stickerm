@@ -1,11 +1,19 @@
-const products = [
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+}
+
+const products: Product[] = [
   {
-    title: "The Awakening",
-    author: "Kate Chopin",
+    id: "1",
+    name: "The Awakening",
+    price: 9.99,
   },
   {
-    title: "City of Glass",
-    author: "Paul Auster",
+    id: "2",
+    name: "City of Glass",
+    price: 12.99,
   },
 ];
 

@@ -10,8 +10,8 @@ import { join } from "path";
 import resolvers from "./resolvers";
 import productRoutes from "./routes/product";
 import { errorHandler } from "./middlewares/errorHandler";
+import config from "./config";
 
-const whitelist = process.env.WHITELIST?.split(",") || [];
 const app = express();
 
 async function startServer() {
@@ -29,38 +29,32 @@ async function startServer() {
 
   app.use(
     "/graphql",
-    cors<cors.CorsRequest>(),
-    express.json(),
-    expressMiddleware(server),
-  );
-
-  app.use(
     cors({
       origin: (origin, callback) => {
-        if (whitelist.indexOf(origin as string) !== -1 || !origin) {
+        if (config.whitelistIPs.indexOf(origin as string) !== -1 || !origin) {
           callback(null, true);
         } else {
           callback(new Error("Not allowed by CORS"));
         }
       },
+      methods: ["GET", "POST"],
+      credentials: true,
     }),
+    express.json(),
+    expressMiddleware(server),
   );
-
-  app.use(express.json());
-
-  app.use("/api", productRoutes);
-
-  app.use(errorHandler);
 
   app.get("/healthz", (req, res) => {
     res.send("API Gateway is healthy");
   });
 
-  // Start the server
-  const PORT = process.env.PORT || 4000;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server ready at: http://localhost:${PORT}`);
-    console.log(`🚀 GraphQL endpoint: http://localhost:${PORT}/graphql`);
+  app.use(`${config.apiPrefix}/products`, productRoutes);
+
+  app.use(errorHandler);
+
+  app.listen(config.port, () => {
+    console.log(`🚀 Server ready at: http://localhost:${config.port}`);
+    console.log(`🚀 GraphQL endpoint: http://localhost:${config.port}/graphql`);
   });
 }
 
