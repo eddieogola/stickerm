@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import client from "../grpc/productService";
 
 dotenv.config();
 
@@ -7,6 +8,7 @@ interface Config {
   nodeEnv: string;
   apiPrefix: string;
   whitelistIPs: string[];
+  productClient: typeof client;
 }
 
 const config: Config = {
@@ -14,6 +16,7 @@ const config: Config = {
   nodeEnv: process.env.NODE_ENV || "development",
   apiPrefix: process.env.API_PREFIX || "/api/v1",
   whitelistIPs: process.env.WHITELIST_IPS?.split(",") || [],
+  productClient: client,
 };
 
 export default config;
