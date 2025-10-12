@@ -1,6 +1,9 @@
-syntax="proto3"
+syntax="proto3";
 
 package stickerm;
+
+// -- GO package options --
+option go_package = "github.com/eddieogola/stickerm/server/productservice/genproto";
 
 // -- Product Service --
 service ProductService {
