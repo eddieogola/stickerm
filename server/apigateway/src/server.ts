@@ -8,7 +8,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 
 import resolvers from "./resolvers";
-import productRoutes from "@/src/routes/product";
+import productRoutes from "./routes/product";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const whitelist = process.env.WHITELIST?.split(",") || [];
