@@ -24,7 +24,9 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
-    "graphql-tag": "^2.12.6"
+    "graphql-tag": "^2.12.6",
+    "pino-http": "^11.0.0",
+    "pino-pretty": "^13.1.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

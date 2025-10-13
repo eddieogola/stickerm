@@ -9,6 +9,7 @@ interface Config {
   apiPrefix: string;
   whitelistIPs: string[];
   productClient: typeof client;
+  logLevel: string;
 }
 
 const config: Config = {
@@ -17,6 +18,7 @@ const config: Config = {
   apiPrefix: process.env.API_PREFIX || "/api/v1",
   whitelistIPs: process.env.WHITELIST_IPS?.split(",") || [],
   productClient: client,
+  logLevel: process.env.LOG_LEVEL || "info",
 };
 
 export default config;
