@@ -9,7 +9,6 @@ import { join } from "path";
 
 import logger from "./utils/logger";
 import resolvers from "./resolvers";
-import productRoutes from "./routes/product";
 import { errorHandler } from "./middlewares/errorHandler";
 import config from "./config";
 
@@ -29,7 +28,7 @@ export async function startServer() {
   await server.start();
 
   app.use(
-    "/graphql",
+    `${config.apiPrefix}/graphql`,
     cors({
       origin: (origin, callback) => {
         if (config.whitelistIPs.indexOf(origin as string) !== -1 || !origin) {
@@ -51,13 +50,13 @@ export async function startServer() {
     res.send("API Gateway is healthy");
   });
 
-  app.use(`${config.apiPrefix}/products`, productRoutes);
-
   app.use(errorHandler);
 
   app.listen(config.port, () => {
     console.log(`🚀 Server ready at: http://localhost:${config.port}`);
-    console.log(`🚀 GraphQL endpoint: http://localhost:${config.port}/graphql`);
+    console.log(
+      `🚀 GraphQL endpoint: http://localhost:${config.port}/api/v1/graphql`,
+    );
   });
 }
 
