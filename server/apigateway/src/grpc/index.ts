@@ -4,13 +4,7 @@ import { join } from "path";
 
 const PROTO_PATH = join(__dirname, "../../../protos/stickerm.proto");
 
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true,
-});
+const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 
 const protoDescriptor = loadPackageDefinition(packageDefinition);
 
