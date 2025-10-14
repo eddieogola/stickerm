@@ -1,23 +1,18 @@
-# Use an official lightweight Node.js image.
 FROM node:18-alpine
 
-# Set the working directory in the container.
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy package.json and package-lock.json (if available)
-COPY package*.json ./
+COPY ./apigateway/package*.json ./apigateway/pnpm-lock.yaml ./
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Install dependencies.
-RUN npm install
+RUN pnpm install
 
-# Copy the rest of the source code.
-COPY . .
+COPY apigateway/ .
 
-# Build the project (assuming tsc is configured to output to the 'dist' folder)
-RUN npm run build
+RUN mkdir ../protos
+COPY ./protos/* ../protos/
 
-# Expose the port (make sure this matches your config; here we assume 3000)
-EXPOSE 3000
 
-# Start the application.
-CMD ["npm", "start"]
+RUN pnpm build
+
+CMD ["pnpm", "start"]

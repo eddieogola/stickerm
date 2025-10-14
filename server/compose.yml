@@ -1,0 +1,69 @@
+services:
+  apigateway:
+    build:
+      context: .
+      dockerfile: ./apigateway/Dockerfile
+    env_file:
+      - ./apigateway/.env
+    develop:
+      watch:
+        - path: ./apigateway/src
+          action: sync
+          target: /app/src
+        - path: ./apigateway/package.json
+          action: rebuild
+    ports:
+      - "4000:4000"
+    networks:
+      - stickerm_network
+  product:
+    build:
+      context: ./productservice
+      dockerfile: Dockerfile
+    env_file:
+      - path: ./productservice/.env
+        required: true
+    depends_on:
+      - db-product
+    networks:
+      - stickerm_network
+  db-product:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: stickerm_prod_user
+      POSTGRES_PASSWORD: securepassword
+      POSTGRES_DB: stickerm_db
+    env_file:
+      - ./productservice/.env
+    volumes:
+      - product_db_data:/var/lib/postgresql/data
+    networks:
+      - stickerm_network
+  db-auth:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: stickerm_auth_user
+      POSTGRES_PASSWORD: securepassword
+      POSTGRES_DB: stickerm_auth_db
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+    networks:
+      - stickerm_network
+  db-recsys:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: stickerm_recsys_user
+      POSTGRES_PASSWORD: securepassword
+      POSTGRES_DB: stickerm_recsys_db
+    volumes:
+      - recsys_db_data:/var/lib/postgresql/data
+    networks:
+      - stickerm_network
+volumes:
+  product_db_data:
+  auth_db_data:
+  recsys_db_data:
+
+networks:
+  stickerm_network:
+    driver: bridge
