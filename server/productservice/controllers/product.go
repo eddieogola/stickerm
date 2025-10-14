@@ -3,9 +3,15 @@ package controllers
 import (
 	"context"
 
+	"github.com/google/uuid"
+
+	config "github.com/eddieogola/stickerm/server/productservice/config"
 	pb "github.com/eddieogola/stickerm/server/productservice/genproto"
+	models "github.com/eddieogola/stickerm/server/productservice/models"
 )
 
+var db = config.GetDB()
+var ctx = context.Background()
 
 type ProductService struct {
 	pb.UnimplementedProductServiceServer
@@ -13,16 +19,33 @@ type ProductService struct {
 
 func (svc *ProductService) CreateProduct(_ context.Context, req *pb.CreateProductRequest) (*pb.CreateProductResponse, error) {
 
-	product := &pb.Product{
-		Id:          "1",
+	uuid := uuid.New()
+
+	product := &models.Product{
+		ID:          uuid.String(),
 		Name:        req.Name,
 		Description: req.Description,
-		Price:      req.Price,
-		ImageUrl:   req.ImageUrl,
+		Price:       req.Price,
+		ImageUrl:    req.ImageUrl,
+	}
+
+	_, err := db.NewInsert().
+		Model(product).
+		Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	pbProduct := &pb.Product{
+		Id:          product.ID,
+		Name:        product.Name,
+		Description: product.Description,
+		Price:      product.Price,
+		ImageUrl:   product.ImageUrl,
 	}
 
 	response := &pb.CreateProductResponse{
-		Product: product,
+		Product: pbProduct,
 	}
 
 	return response, nil
@@ -30,26 +53,33 @@ func (svc *ProductService) CreateProduct(_ context.Context, req *pb.CreateProduc
 }
 
 func (svc *ProductService) GetProducts(_ context.Context, req *pb.GetProductsRequest) (*pb.GetProductsResponse, error) {
+	
+	var products []models.Product
+	
 
-	products := []*pb.Product{
-		{
-			Id:          "1",
-			Name:        "Sample Product 1",
-			Description: "This is a sample product description.",
-			Price:      19.99,
-			ImageUrl:   "http://example.com/image1.png",
-		},
-		{
-			Id:          "2",
-			Name:        "Sample Product 2",
-			Description: "This is another sample product description.",
-			Price:      29.99,
-			ImageUrl:   "http://example.com/image2.png",
-		},
+	err := db.NewSelect().
+		Model(&products).
+		Scan(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var pbProducts []*pb.Product = make([]*pb.Product, 0, len(products))
+	
+	for _, product := range products {
+		pbProduct := &pb.Product{
+			Id:          product.ID,
+			Name:        product.Name,
+			Description: product.Description,
+			Price:      product.Price,
+			ImageUrl:   product.ImageUrl,
+		}
+		pbProducts = append(pbProducts, pbProduct)
 	}
 
 	response := &pb.GetProductsResponse{
-		Products: products,
+		Products: pbProducts,
 	}
 
 	return response, nil

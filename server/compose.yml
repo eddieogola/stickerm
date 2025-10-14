@@ -4,7 +4,8 @@ services:
       context: .
       dockerfile: ./apigateway/Dockerfile
     env_file:
-      - ./apigateway/.env
+      - path: ./apigateway/.env
+        required: true
     develop:
       watch:
         - path: ./apigateway/src
@@ -27,6 +28,16 @@ services:
       - db-product
     networks:
       - stickerm_network
+    develop:
+      watch:
+        - path: ./productservice
+          action: restart
+          target: /app
+        - path: ./productservice/.env
+          action: rebuild
+        - path: ./productservice/go.mod
+          action: rebuild
+
   db-product:
     image: postgres:15
     environment:
