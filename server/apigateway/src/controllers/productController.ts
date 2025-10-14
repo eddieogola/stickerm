@@ -88,16 +88,19 @@ export const updateProduct = (
 
 export const deleteProduct = (
   id: Pick<Product, "id">,
-): Promise<{ success: boolean } | Error> => {
+): Promise<boolean | Error> => {
   return new Promise((resolve, reject) => {
-    config.productClient.DeleteProduct({ id }, (error, response) => {
-      if (error) {
-        logger.error("Error deleting product:" + JSON.stringify(error));
-        reject(error);
-        return;
-      }
-      logger.info("Product deleted successfully:" + JSON.stringify(response));
-      resolve({ success: true });
-    });
+    config.productClient.DeleteProduct(
+      { id },
+      (error: ServiceError | null, response: { success: boolean }) => {
+        if (error) {
+          logger.error("Error deleting product:" + JSON.stringify(error));
+          reject(error);
+          return;
+        }
+        logger.info("Product deleted successfully:" + JSON.stringify(response));
+        resolve(response.success);
+      },
+    );
   });
 };
