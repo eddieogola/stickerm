@@ -5,7 +5,6 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productController";
-import {} from "graphql";
 import { Product } from "../models/Product";
 
 const resolvers = {
@@ -14,8 +13,7 @@ const resolvers = {
     product: (_: any, args: { id: string }) => getProductById({ id: args.id }),
   },
   Mutation: {
-    createProduct: (_: any, args: { productData: Product }) =>
-      createProduct(args.productData),
+    createProduct: (_: any, args: Product) => createProduct(args),
     updateProduct: (
       _: any,
       args: {
@@ -23,8 +21,7 @@ const resolvers = {
         productData: Partial<Omit<Product, "id">>;
       },
     ) => updateProduct(args.id, args.productData),
-    deleteProduct: (_: any, args: { id: Pick<Product, "id"> }) =>
-      deleteProduct(args.id),
+    deleteProduct: (_: any, args: Pick<Product, "id">) => deleteProduct(args),
   },
 };
 

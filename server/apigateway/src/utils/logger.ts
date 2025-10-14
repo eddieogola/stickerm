@@ -1,4 +1,4 @@
-import pino from "pino-http";
+import pino from "pino";
 import config from "../config";
 
 const logger = pino({

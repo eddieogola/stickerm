@@ -10,4 +10,4 @@ const protoDescriptor = loadPackageDefinition(packageDefinition);
 
 const stickermProto = protoDescriptor.stickerm;
 
-export { stickermProto };
+export default stickermProto;

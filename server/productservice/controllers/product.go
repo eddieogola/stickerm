@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"log"
 
 	"github.com/google/uuid"
 
@@ -35,6 +36,9 @@ func (svc *ProductService) CreateProduct(_ context.Context, req *pb.CreateProduc
 	if err != nil {
 		return nil, err
 	}
+
+	log.Println("Product created with Name:", product.Name)
+	log.Println("Product created with ID:", product.ID)
 
 	pbProduct := &pb.Product{
 		Id:          product.ID,

@@ -7,10 +7,10 @@ import { buildSubgraphSchema } from "@apollo/subgraph";
 import { readFileSync } from "fs";
 import { join } from "path";
 
-import logger from "./utils/logger";
+import config from "./config";
+
 import resolvers from "./resolvers";
 import { errorHandler } from "./middlewares/errorHandler";
-import config from "./config";
 
 const app = express();
 
@@ -43,10 +43,8 @@ export async function startServer() {
     express.json(),
     expressMiddleware(server),
   );
-  app.use(logger);
 
   app.get(`${config.apiPrefix}/healthz`, (req, res) => {
-    req.log.info("Health check endpoint hit");
     res.send("API Gateway is healthy");
   });
 

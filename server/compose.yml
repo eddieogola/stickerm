@@ -26,6 +26,8 @@ services:
         required: true
     depends_on:
       - db-product
+    ports:
+      - "50051:50051"
     networks:
       - stickerm_network
     develop:

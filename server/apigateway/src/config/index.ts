@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import client from "../grpc/productService";
+import logger from "../utils/logger";
 
 dotenv.config();
 
@@ -23,5 +24,7 @@ const config: Config = {
   productServiceEndpoint:
     process.env.PRODUCT_SERVICE_GRPC_ENDPOINT || "localhost:50051",
 };
+
+logger.info("Configuration Loaded: " + JSON.stringify(config));
 
 export default config;
