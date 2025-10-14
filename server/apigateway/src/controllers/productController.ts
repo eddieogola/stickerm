@@ -1,31 +1,41 @@
 import config from "../config";
 import { ServiceError } from "@grpc/grpc-js";
 import { Product } from "../models/Product";
+import logger from "../utils/logger";
 
-export const createProduct = (productData: Product) => {
-  config.productClient.CreateProduct(
-    productData,
-    (error: ServiceError | null, response: any) => {
-      if (error) {
-        console.error("Error creating product:", error);
-        return;
-      }
-      console.log("Product created successfully:", response);
-    },
-  );
+export const createProduct = (
+  productData: Product,
+): Promise<Product | Error> => {
+  return new Promise((resolve, reject) => {
+    config.productClient.CreateProduct(
+      productData,
+      (error: ServiceError | null, response: { product: Product }) => {
+        if (error) {
+          logger.error("Error creating product:" + error.message);
+          reject(error);
+          return;
+        }
+
+        logger.info(
+          "Product created successfully: " + JSON.stringify(response.product),
+        );
+        resolve(response.product);
+      },
+    );
+  });
 };
 
 export const getProducts = (): Promise<Product[] | Error> => {
   return new Promise((resolve, reject) => {
     config.productClient.GetProducts(
       {},
-      (error: ServiceError | null, res: { products: Product[] }) => {
+      (error: ServiceError | null, res: any) => {
         if (error) {
           console.error("Error fetching products:", error);
           reject(error);
           return;
         }
-        console.log("Fetched products successfully:", res);
+        logger.info("Fetched products successfully:", res);
         resolve(res.products);
       },
     );

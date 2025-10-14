@@ -13,15 +13,17 @@ const resolvers = {
     product: (_: any, args: { id: string }) => getProductById({ id: args.id }),
   },
   Mutation: {
-    createProduct: (_: any, args: Product) => createProduct(args),
-    updateProduct: (
+    createProduct: async (_: any, args: Product): Promise<Product | Error> =>
+      createProduct(args),
+    updateProduct: async (
       _: any,
       args: {
         id: Pick<Product, "id">;
         productData: Partial<Omit<Product, "id">>;
       },
-    ) => updateProduct(args.id, args.productData),
-    deleteProduct: (_: any, args: Pick<Product, "id">) => deleteProduct(args),
+    ) => await updateProduct(args.id, args.productData),
+    deleteProduct: async (_: any, args: Pick<Product, "id">) =>
+      await deleteProduct(args),
   },
 };
 

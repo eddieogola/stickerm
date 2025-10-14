@@ -37,8 +37,7 @@ func (svc *ProductService) CreateProduct(_ context.Context, req *pb.CreateProduc
 		return nil, err
 	}
 
-	log.Println("Product created with Name:", product.Name)
-	log.Println("Product created with ID:", product.ID)
+	log.Println("Product created successfully:", product)
 
 	pbProduct := &pb.Product{
 		Id:          product.ID,
@@ -47,6 +46,8 @@ func (svc *ProductService) CreateProduct(_ context.Context, req *pb.CreateProduc
 		Price:      product.Price,
 		ImageUrl:   product.ImageUrl,
 	}
+
+	log.Println("Product created successfully:", *product)
 
 	response := &pb.CreateProductResponse{
 		Product: pbProduct,
