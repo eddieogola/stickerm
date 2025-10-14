@@ -1,5 +1,4 @@
 import { Client, ServiceError, credentials } from "@grpc/grpc-js";
-import config from "../config/index";
 import stickermProto from ".";
 import { Product } from "../models/Product";
 
@@ -29,8 +28,10 @@ interface ProductService extends Client {
   ): void;
 }
 
+const PRODUCT_ENDPOINT =
+  process.env.PRODUCT_SERVICE_GRPC_ENDPOINT || "localhost:50051";
 const client: ProductService = new (stickermProto as any).ProductService(
-  config.productServiceEndpoint,
+  PRODUCT_ENDPOINT,
   credentials.createInsecure(),
 );
 
