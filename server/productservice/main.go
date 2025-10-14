@@ -19,13 +19,13 @@ var (
 func main() {
 	flag.Parse()
 
-	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", *port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	fmt.Printf("Product Service gRPC server listening at %v\n", lis.Addr())
+	fmt.Printf("🚀 Product Service gRPC server listening at %v\n", lis.Addr())
 
 	var opts []grpc.ServerOption
 	grpcServer := grpc.NewServer(opts...)
