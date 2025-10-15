@@ -93,11 +93,19 @@ func (svc *ProductService) GetProductById(ctx context.Context, req *pb.GetProduc
 
 	var product models.Product
 
-	_, err := db.NewSelect().Model((*models.Product)(nil)).Where("name LIKE '%foo%'").Exists(ctx)
+	exists, err := db.NewSelect().
+		Model((*models.Product)(nil)).
+		Where("id = ?", req.Id).
+		Exists(ctx)
 
 	if err != nil {
 		log.Printf("Error getting product by ID %s: %v", req.Id, err)
         return nil, err
+	}
+
+	if !exists {
+		log.Printf("Product with ID %s not found", req.Id)
+		return nil, nil
 	}
 
 	erro := db.NewSelect().

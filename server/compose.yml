@@ -32,9 +32,13 @@ services:
       - stickerm_network
     develop:
       watch:
-        - action: restart
+        - action: sync
           path: ./productservice
           target: /app
+          ignore:
+            - ./productservice/.env
+            - ./productservice/go.mod
+            - ./productservice/go.sum
         - action: rebuild
           path: ./productservice/.env
         - action: rebuild
