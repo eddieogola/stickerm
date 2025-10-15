@@ -161,7 +161,7 @@ func (svc *ProductService) UpdateProduct(ctx context.Context, req *pb.UpdateProd
 
 func (svc *ProductService) DeleteProduct(ctx context.Context, req *pb.DeleteProductRequest) (*pb.DeleteProductResponse, error) {
 
-	_, err := db.NewDelete().
+	res, err := db.NewDelete().
 		Model((*models.Product)(nil)).
 		Where("id = ?", req.Id).
 		Exec(ctx)
@@ -170,10 +170,29 @@ func (svc *ProductService) DeleteProduct(ctx context.Context, req *pb.DeleteProd
 		return nil, err
 	}
 
-	log.Printf("Product deleted successfully: %s", req.Id)
+	rows, errv := res.RowsAffected();
 
-	response := &pb.DeleteProductResponse{
-		Success: true,
+
+	var response *pb.DeleteProductResponse
+
+	if  errv != nil {
+		log.Printf("Error checking affected rows for product ID %s: %v", req.Id, errv)
+		return nil, errv
+
+	} else if rows == 0 {
+		log.Printf("No product found with ID: %s", req.Id)
+
+		response = &pb.DeleteProductResponse{
+			Success: false,
+			Message: "Product with ID " + req.Id + " not found",
+		}
+	} else {
+		log.Printf("Product with ID %s deleted successfully, affected rows: %d", req.Id, rows)
+
+		response = &pb.DeleteProductResponse{
+			Success: true,
+			Message: "Product with ID " + req.Id + " deleted successfully",
+		}
 	}
 
 	return response, nil

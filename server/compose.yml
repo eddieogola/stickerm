@@ -32,13 +32,13 @@ services:
       - stickerm_network
     develop:
       watch:
-        - path: ./productservice
-          action: restart
+        - action: restart
+          path: ./productservice
           target: /app
-        - path: ./productservice/.env
-          action: rebuild
-        - path: ./productservice/go.mod
-          action: rebuild
+        - action: rebuild
+          path: ./productservice/.env
+        - action: rebuild
+          path: ./productservice/go.mod
 
   db-product:
     image: postgres:15

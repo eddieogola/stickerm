@@ -5,26 +5,38 @@ import { Product } from "../models/Product";
 interface ProductService extends Client {
   CreateProduct(
     request: Product,
-    callback: (error: ServiceError | null, response: any) => void,
+    callback: (
+      error: ServiceError | null,
+      response: { product: Product },
+    ) => void,
   ): void;
   GetProducts(
     request: {},
-    callback: (error: ServiceError | null, response: any) => void,
+    callback: (
+      error: ServiceError | null,
+      response: { products: Product[] },
+    ) => void,
   ): void;
   GetProductById(
-    request: { id: Pick<Product, "id"> },
-    callback: (error: ServiceError | null, response: any) => void,
+    request: { id: string },
+    callback: (
+      error: ServiceError | null,
+      response: { product: Product },
+    ) => void,
   ): void;
   UpdateProduct(
-    request: {
-      id: Pick<Product, "id">;
-      productData: Partial<Omit<Product, "id">>;
-    },
-    callback: (error: ServiceError | null, response: any) => void,
+    request: Product,
+    callback: (
+      error: ServiceError | null,
+      response: { product: Product },
+    ) => void,
   ): void;
   DeleteProduct(
-    request: { id: Pick<Product, "id"> },
-    callback: (error: ServiceError | null, response: any) => void,
+    request: { id: string },
+    callback: (
+      error: ServiceError | null,
+      response: { success: boolean; message: string },
+    ) => void,
   ): void;
 }
 

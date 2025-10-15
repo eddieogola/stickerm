@@ -544,6 +544,7 @@ func (x *DeleteProductRequest) GetId() string {
 type DeleteProductResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -585,6 +586,13 @@ func (x *DeleteProductResponse) GetSuccess() bool {
 	return false
 }
 
+func (x *DeleteProductResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_stickerm_proto protoreflect.FileDescriptor
 
 const file_stickerm_proto_rawDesc = "" +
@@ -619,9 +627,10 @@ const file_stickerm_proto_rawDesc = "" +
 	"\x15UpdateProductResponse\x12+\n" +
 	"\aproduct\x18\x01 \x01(\v2\x11.stickerm.ProductR\aproduct\"&\n" +
 	"\x14DeleteProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"1\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"K\n" +
 	"\x15DeleteProductResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\xa7\x03\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage2\xa7\x03\n" +
 	"\x0eProductService\x12P\n" +
 	"\rCreateProduct\x12\x1e.stickerm.CreateProductRequest\x1a\x1f.stickerm.CreateProductResponse\x12J\n" +
 	"\vGetProducts\x12\x1c.stickerm.GetProductsRequest\x1a\x1d.stickerm.GetProductsResponse\x12S\n" +

@@ -11,6 +11,16 @@ type Query {
   product(id: ID!): Product
 }
 
+enum Status {
+  success
+  failure
+}
+
+type MutationResponse {
+  status: Status!
+  message: String
+}
+
 type Mutation {
   createProduct(
     name: String!
@@ -27,5 +37,5 @@ type Mutation {
     imageUrl: String
   ): Product
 
-  deleteProduct(id: ID!): Boolean
+  deleteProduct(id: ID!): MutationResponse
 }

@@ -44,9 +44,7 @@ export const getProducts = (): Promise<Product[] | Error> => {
   });
 };
 
-export const getProductById = (
-  id: Pick<Product, "id">,
-): Promise<Product | Error> => {
+export const getProductById = (id: string): Promise<Product | Error> => {
   return new Promise((resolve, reject) => {
     config.productClient.GetProductById(
       { id },
@@ -67,39 +65,46 @@ export const getProductById = (
 };
 
 export const updateProduct = (
-  id: Pick<Product, "id">,
-  productData: Partial<Omit<Product, "id">>,
+  productData: Product,
 ): Promise<Product | Error> => {
   return new Promise((resolve, reject) => {
     config.productClient.UpdateProduct(
-      { id, productData },
-      (error, response) => {
+      productData,
+      (error: ServiceError | null, response: { product: Product }) => {
         if (error) {
           logger.error("Error updating product:" + JSON.stringify(error));
           reject(error);
           return;
         }
         logger.info("Product updated successfully:" + JSON.stringify(response));
-        resolve(response);
+        resolve(response.product);
       },
     );
   });
 };
 
 export const deleteProduct = (
-  id: Pick<Product, "id">,
-): Promise<boolean | Error> => {
+  id: string,
+): Promise<{ status: "success" | "failure"; message: string } | Error> => {
+  logger.info("Attempting to delete product with ID: " + id);
+
   return new Promise((resolve, reject) => {
     config.productClient.DeleteProduct(
       { id },
-      (error: ServiceError | null, response: { success: boolean }) => {
+      (
+        error: ServiceError | null,
+        response: { success: boolean; message: string },
+      ) => {
         if (error) {
           logger.error("Error deleting product:" + JSON.stringify(error));
           reject(error);
           return;
         }
         logger.info("Product deleted successfully:" + JSON.stringify(response));
-        resolve(response.success);
+        resolve({
+          status: response.success ? "success" : "failure",
+          message: response.message,
+        });
       },
     );
   });
